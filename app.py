@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 
 from models import db, Donor, OneTimeDonation, MonthlyDonation
 
@@ -10,4 +10,8 @@ db.init_app(app)
 
 @app.route("/")
 def index():
-    return "Hello World!"
+    return render_template("index.html")
+
+@app.route("/stats")
+def stats():
+    return render_template("stats.html")

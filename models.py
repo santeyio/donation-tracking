@@ -20,6 +20,7 @@ class Donor(db.Model):
 
     email_subscribe = db.Column(db.Boolean)
     prayer_partner = db.Column(db.Boolean)
+    volunteer = db.Column(db.Boolean)
     noah = db.Column(db.Boolean)
     nehemiah = db.Column(db.Boolean)
     younglife = db.Column(db.Boolean)
@@ -32,8 +33,8 @@ class Donor(db.Model):
     tell_friends = db.Column(db.Boolean)
     tell_church = db.Column(db.Boolean)
 
-    one_time_donations = db.relationship("OneTimeDonation")
-    monthly_donations = db.relationship("MonthlyDonation")
+    one_time_donations = db.relationship("OneTimeDonation", uselist=False, back_populates="donor")
+    monthly_donations = db.relationship("MonthlyDonation", uselist=False, back_populates="donor")
 
 
 class OneTimeDonation(db.Model):

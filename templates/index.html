@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}Some Title{% endblock %}
+
+{% block body %}
+{% raw %}
+<div class="container">
+
+	<div id="section1" class="mt-4">
+			<div class="form-group form-row">
+				<div class="col">
+					<label for="fname_input">First Name</label>
+					<input v-model="first_name" name="first_name" class="form-control" id="fname_input" type="text" placeholder="First Name">
+				</div>
+				<div class="col">
+					<label for="lname_input">Last Name</label>
+					<input v-model="last_name" name="last_name" class="form-control" id="lname_input" type="text" placeholder="Last Name">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="email_input">Email</label>
+				<input v-model="email" name="email" class="form-control" id="email_input" type="text" placeholder="you@gmail.com">
+			</div>
+			<div class="form-group">
+				<label for="phone_input">Phone</label>
+				<input v-model="phone" name="phone" class="form-control" id="phone_input" type="text" placeholder="8601231234">
+			</div>
+			<div class="form-group">
+				<label for="address_input">Address</label>
+				<input v-model="address" name="address" class="form-control" id="address_input" type="text" placeholder="111 Imaginary Dr">
+			</div>
+			<div class="form-row">
+				<div class="col-md-6">
+					<label for="city_input">City</label>
+					<input v-model="city" name="city" class="form-control" id="city_input" type="text" placeholder="Hartford">
+				</div>
+				<div class="col-md-3">
+					<label for="state_input">State</label>
+					<input v-model="state" name="state" class="form-control" id="state_input" type="text" placeholder="CT">
+				</div>
+				<div class="col-md-3">
+					<label for="zipcode_input">Zip</label>
+					<input v-model="zipcode" name="zipcode" class="form-control" id="zipcode_input" type="text" placeholder="06112">
+				</div>
+			</div>
+			<br/><br/>
+			<button class="btn btn-primary">Next</button>
+	</div>
+
+	<div v-if="display" id="section2" class="mt-4">
+    <h3 class="my-4">I'm Interested In Helping HCM</h3>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input v-model="email_subscribe" name="email_subscribe" class="form-check-input mr-2" type="checkbox" value="">
+        Subscribe for email updates
+      </label>
+    </div>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input v-model="prayer_partner" name="prayer_partner" class="form-check-input mr-2" type="checkbox" value="">
+        Prayer Partner
+      </label>
+    </div>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input v-model="volunteer" name="volunteer" class="form-check-input mr-2" type="checkbox" value="">
+        Volunteer
+      </label>
+    </div>
+    <div class="form-check pl-4">
+      <label class="form-check-label">
+        <input v-model="noah" name="noah" class="form-check-input mr-2" type="checkbox" value="">
+        Noah After School (Grades 1-5)
+      </label>
+    </div>
+    <div class="form-check pl-4">
+      <label class="form-check-label">
+        <input v-model="nehemiah" name="nehemiah" class="form-check-input mr-2" type="checkbox" value="">
+        Nehemiah After School (Grades 6-8)
+      </label>
+    </div>
+    <div class="form-check pl-4">
+      <label class="form-check-label">
+        <input v-model="younglife" name="younglife" class="form-check-input mr-2" type="checkbox" value="">
+        Younglife (Grades 9-12)
+      </label>
+    </div>
+    <div class="form-check pl-4">
+      <label class="form-check-label">
+        <input v-model="cooking" name="cooking" class="form-check-input mr-2" type="checkbox" value="">
+        Cooking / Donating Meals
+      </label>
+    </div>
+    <div class="form-check pl-4">
+      <label class="form-check-label">
+        <input v-model="maintenance" name="maintenance" class="form-check-input mr-2" type="checkbox" value="">
+        Service Maintenance Projects
+      </label>
+    </div>
+    <div class="form-check pl-4">
+      <label class="form-check-label">
+        <input v-model="administration" name="administration" class="form-check-input mr-2" type="checkbox" value="">
+        Administration, including mailings, etc.
+      </label>
+    </div>
+    <div class="form-check pl-4">
+      <label class="form-check-label">
+        <input v-model="event_planning" name="event_planning" class="form-check-input mr-2" type="checkbox" value="">
+        Event Planning
+      </label>
+    </div>
+    <div class="form-check pl-4">
+      <label class="form-check-label">
+        <input v-model="table_host" name="table_host" class="form-check-input mr-2" type="checkbox" value="">
+        Table Host at Annual Gala
+      </label>
+    </div>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input v-model="contact_me" name="contact_me" class="form-check-input mr-2" type="checkbox" value="">
+        Please Contact Me
+      </label>
+    </div>
+    <h3 class="my-3">I Can Help Spread The Word About HCM</h3>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input v-model="tell_friends" name="tell_friends" class="form-check-input mr-2" type="checkbox" value="">
+        I'd like to tell my friends about HCM
+      </label>
+    </div>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input v-model="tell_church" name="tell_church" class="form-check-input mr-2" type="checkbox" value="">
+        I'd like to talk to my church about supporting HCM
+      </label>
+    </div>
+
+	</div>
+
+</div>
+<script src="https://unpkg.com/vue"></script>
+<script>
+
+var section1 = new Vue({
+  el: '#section1',
+  data: {
+    display: true,
+		first_name: "",
+		last_name: "",
+		email: "",
+		phone: "",
+		address: "",
+		city: "",
+		state: "",
+		zipcode: "",
+  }
+})
+
+var section2 = new Vue({
+  el: '#section2',
+  data: {
+    display: true,
+    email_subscribe: false,
+    prayer_partner: false,
+    volunteer: false,
+    noah: false,
+    nehemiah: false,
+    younglife: false,
+    cooking: false,
+    maintenance: false,
+    administration: false,
+    event_planning: false,
+    table_host: false,
+    contact_me: false,
+    tell_friends: false,
+    tell_church: false,
+  }
+})
+
+var section3 = new Vue({
+  el: '#section3',
+  data: {
+    display: true,
+  }
+})
+
+</script>
+
+{% endraw %}
+{% endblock %}
