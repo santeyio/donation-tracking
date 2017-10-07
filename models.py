@@ -32,27 +32,27 @@ class Donor(db.Model):
     tell_friends = db.Column(db.Boolean)
     tell_church = db.Column(db.Boolean)
 
-    one_time_donations = relationship("OneTimeDonation")
-    monthly_donations = relationship("MonthlyDonation")
+    one_time_donations = db.relationship("OneTimeDonation")
+    monthly_donations = db.relationship("MonthlyDonation")
 
 
 class OneTimeDonation(db.Model):
 
     __tablename__ = 'one_time_donation'
 
-    id = db.Column(Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Integer, nullable=False)
     
-    donor_id = Column(db.Integer, db.ForeignKey('donor.id'))
-    donor = relationship("Donor", back_populates="one_time_donations")
+    donor_id = db.Column(db.Integer, db.ForeignKey('donor.id'))
+    donor = db.relationship("Donor", back_populates="one_time_donations")
 
 
 class MonthlyDonation(db.Model):
 
     __tablename__ = 'monthly_donation'
 
-    id = db.Column(Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Integer, nullable=False)
 
-    donor_id = Column(db.Integer, db.ForeignKey('donor.id'))
-    donor = relationship("Donor", back_populates="monthly_donations")
+    donor_id = db.Column(db.Integer, db.ForeignKey('donor.id'))
+    donor = db.relationship("Donor", back_populates="monthly_donations")
