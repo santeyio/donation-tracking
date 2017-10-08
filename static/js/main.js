@@ -12,7 +12,6 @@ var section1 = new Vue({
 		city: "",
 		state: "",
 		zipcode: "",
-    submitted: false,
   },
   methods: {
     next: function(){

@@ -79,8 +79,12 @@ def flowstatus():
 
 def update_user(user_id, request):
     user = Donor.query.get(uuid.UUID(user_id))
-    request.get_json()
-    db.session.add(updated_
+    jparse = request.get_json()
+    for k, v in jparse.iteritems():
+        if k == 'display': #TODO get rid of this hack -- I think the vue code needs to be changed
+            continue
+        user(k=v)
+    db.session.commit()
 
 
 def user_query_to_json(query):
