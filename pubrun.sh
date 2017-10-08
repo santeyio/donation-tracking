@@ -2,4 +2,4 @@
 
 export FLASK_APP=app.py
 export FLASK_DEBUG=1
-flask run -h localhost -p 5500
+flask run -h 0.0.0.0 -p 5500

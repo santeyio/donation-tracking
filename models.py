@@ -1,6 +1,7 @@
 import uuid
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy_utils import UUIDType
 
 
 db = SQLAlchemy()
@@ -9,10 +10,10 @@ class Donor(db.Model):
 
     __tablename__ = 'donor'
 
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String, nullable=False)
-    last_name = db.Column(db.String, nullable=False)
-    email = db.Column(db.String, nullable=False, unique=True)
+    id = db.Column(UUIDType, primary_key=True)
+    first_name = db.Column(db.String)
+    last_name = db.Column(db.String)
+    email = db.Column(db.String, unique=True)
     city = db.Column(db.String, default="None Provided")
     state = db.Column(db.String, default="None Provided")
     zipcode = db.Column(db.String, default="None Provided")
@@ -33,8 +34,8 @@ class Donor(db.Model):
     tell_friends = db.Column(db.Boolean)
     tell_church = db.Column(db.Boolean)
 
-    one_time_donations = db.relationship("OneTimeDonation", uselist=False, back_populates="donor")
-    monthly_donations = db.relationship("MonthlyDonation", uselist=False, back_populates="donor")
+    one_time_donation = db.relationship("OneTimeDonation", uselist=False, back_populates="donor")
+    monthly_donation = db.relationship("MonthlyDonation", uselist=False, back_populates="donor")
 
 
 class OneTimeDonation(db.Model):
@@ -45,7 +46,7 @@ class OneTimeDonation(db.Model):
     amount = db.Column(db.Integer, nullable=False)
     
     donor_id = db.Column(db.Integer, db.ForeignKey('donor.id'))
-    donor = db.relationship("Donor", back_populates="one_time_donations")
+    donor = db.relationship("Donor", back_populates="one_time_donation")
 
 
 class MonthlyDonation(db.Model):
@@ -56,4 +57,11 @@ class MonthlyDonation(db.Model):
     amount = db.Column(db.Integer, nullable=False)
 
     donor_id = db.Column(db.Integer, db.ForeignKey('donor.id'))
-    donor = db.relationship("Donor", back_populates="monthly_donations")
+    donor = db.relationship("Donor", back_populates="monthly_donation")
+
+class FlowFlags(db.Model):
+
+    __tablename__ = 'flow_flags'
+
+    flag_name = db.Column(db.String, primary_key=True)
+    flag_status = db.Column(db.Integer, default=1)

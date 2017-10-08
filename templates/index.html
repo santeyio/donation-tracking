@@ -6,45 +6,45 @@
 {% raw %}
 <div class="container">
 
-	<div id="section1" class="mt-4">
-			<div class="form-group form-row">
-				<div class="col">
-					<label for="fname_input">First Name</label>
-					<input v-model="first_name" name="first_name" class="form-control" id="fname_input" type="text" placeholder="First Name">
-				</div>
-				<div class="col">
-					<label for="lname_input">Last Name</label>
-					<input v-model="last_name" name="last_name" class="form-control" id="lname_input" type="text" placeholder="Last Name">
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="email_input">Email</label>
-				<input v-model="email" name="email" class="form-control" id="email_input" type="text" placeholder="you@gmail.com">
-			</div>
-			<div class="form-group">
-				<label for="phone_input">Phone</label>
-				<input v-model="phone" name="phone" class="form-control" id="phone_input" type="text" placeholder="8601231234">
-			</div>
-			<div class="form-group">
-				<label for="address_input">Address</label>
-				<input v-model="address" name="address" class="form-control" id="address_input" type="text" placeholder="111 Imaginary Dr">
-			</div>
-			<div class="form-row">
-				<div class="col-md-6">
-					<label for="city_input">City</label>
-					<input v-model="city" name="city" class="form-control" id="city_input" type="text" placeholder="Hartford">
-				</div>
-				<div class="col-md-3">
-					<label for="state_input">State</label>
-					<input v-model="state" name="state" class="form-control" id="state_input" type="text" placeholder="CT">
-				</div>
-				<div class="col-md-3">
-					<label for="zipcode_input">Zip</label>
-					<input v-model="zipcode" name="zipcode" class="form-control" id="zipcode_input" type="text" placeholder="06112">
-				</div>
-			</div>
-			<br/><br/>
-			<button class="btn btn-primary">Next</button>
+	<div v-if="display" id="section1" class="mt-4">
+    <div class="form-group form-row">
+      <div class="col">
+        <label for="fname_input">First Name</label>
+        <input v-model="first_name" name="first_name" class="form-control" id="fname_input" type="text" placeholder="First Name">
+      </div>
+      <div class="col">
+        <label for="lname_input">Last Name</label>
+        <input v-model="last_name" name="last_name" class="form-control" id="lname_input" type="text" placeholder="Last Name">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email_input">Email</label>
+      <input v-model="email" name="email" class="form-control" id="email_input" type="text" placeholder="you@gmail.com">
+    </div>
+    <div class="form-group">
+      <label for="phone_input">Phone</label>
+      <input v-model="phone" name="phone" class="form-control" id="phone_input" type="text" placeholder="8601231234">
+    </div>
+    <div class="form-group">
+      <label for="address_input">Address</label>
+      <input v-model="address" name="address" class="form-control" id="address_input" type="text" placeholder="111 Imaginary Dr">
+    </div>
+    <div class="form-row">
+      <div class="col-md-6">
+        <label for="city_input">City</label>
+        <input v-model="city" name="city" class="form-control" id="city_input" type="text" placeholder="Hartford">
+      </div>
+      <div class="col-md-3">
+        <label for="state_input">State</label>
+        <input v-model="state" name="state" class="form-control" id="state_input" type="text" placeholder="CT">
+      </div>
+      <div class="col-md-3">
+        <label for="zipcode_input">Zip</label>
+        <input v-model="zipcode" name="zipcode" class="form-control" id="zipcode_input" type="text" placeholder="06112">
+      </div>
+    </div>
+    <br/><br/>
+    <button v-on:click="next" class="btn btn-primary">Next</button>
 	</div>
 
 	<div v-if="display" id="section2" class="mt-4">
@@ -134,56 +134,36 @@
         I'd like to talk to my church about supporting HCM
       </label>
     </div>
-
+		<br/>
+    <button v-on:click="back" class="btn btn-primary">Back</button>
+    <button v-on:click="next" class="btn btn-primary">Next</button>
+    <br/><br/>
 	</div>
+
+  <div id="section3">
+
+  </div>
+
+  <div id="overlay" onClick="overlay_off()">
+    <h4 id="overlay_text">Whoa there cowboy, wait 'till Dave says it's time for the next page ;)</h4>
+  </div>
 
 </div>
 <script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/static/js/main.js"></script>
+
 <script>
+// --------------------------------------------
+// ------ toggle for the screen overlay -------
+// --------------------------------------------
 
-var section1 = new Vue({
-  el: '#section1',
-  data: {
-    display: true,
-		first_name: "",
-		last_name: "",
-		email: "",
-		phone: "",
-		address: "",
-		city: "",
-		state: "",
-		zipcode: "",
-  }
-})
-
-var section2 = new Vue({
-  el: '#section2',
-  data: {
-    display: true,
-    email_subscribe: false,
-    prayer_partner: false,
-    volunteer: false,
-    noah: false,
-    nehemiah: false,
-    younglife: false,
-    cooking: false,
-    maintenance: false,
-    administration: false,
-    event_planning: false,
-    table_host: false,
-    contact_me: false,
-    tell_friends: false,
-    tell_church: false,
-  }
-})
-
-var section3 = new Vue({
-  el: '#section3',
-  data: {
-    display: true,
-  }
-})
-
+function overlay_on() {
+  document.getElementById("overlay").style.display = "block";
+}
+function overlay_off() {
+    document.getElementById("overlay").style.display = "none";
+}
 </script>
 
 {% endraw %}
