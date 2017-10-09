@@ -44,6 +44,7 @@ def user():
 
     if request.method == "PUT":
         update_user(user_id, request)
+        return json.dumps({'status': 'success'})
 
 
 @app.route("/flowstatus", methods=["GET", "POST"])
@@ -83,7 +84,8 @@ def update_user(user_id, request):
     for k, v in jparse.iteritems():
         if k == 'display': #TODO get rid of this hack -- I think the vue code needs to be changed
             continue
-        user(k=v)
+        setattr(user, k, v)
+    print user
     db.session.commit()
 
 
@@ -93,10 +95,11 @@ def user_query_to_json(query):
     :param query: sqlalchemy object
     """
     user = {
-        'id': query.id,
+        'id': str(query.id),
         'first_name': query.first_name,
         'last_name': query.last_name,
         'email': query.email,
+        'address': query.address,
         'city': query.city,
         'state': query.state,
         'zipcode': query.zipcode,
@@ -107,7 +110,7 @@ def user_query_to_json(query):
         'volunteer': query.volunteer,
         'noah': query.noah,
         'nehemiah': query.nehemiah,
-        'younglife': query.younglive,
+        'younglife': query.younglife,
         'cooking': query.cooking,
         'maintenance': query.maintenance,
         'administration': query.administration,

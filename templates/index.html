@@ -10,7 +10,7 @@
     <div class="form-group form-row">
       <div class="col">
         <label for="fname_input">First Name</label>
-        <input v-model="user_data.first_name" name="first_name" class="form-control" id="fname_input" type="text" placeholder="First Name">
+        <input v-model="first_name" name="first_name" class="form-control" id="fname_input" type="text" placeholder="First Name">
       </div>
       <div class="col">
         <label for="lname_input">Last Name</label>
@@ -43,12 +43,18 @@
         <input v-model="zipcode" name="zipcode" class="form-control" id="zipcode_input" type="text" placeholder="06112">
       </div>
     </div>
-    <br/><br/>
-    <button v-on:click="next" class="btn btn-primary">Next</button>
+    <div class="form-row">
+      <div class="col-md-2">
+        <button v-on:click="submit" class="btn btn-light my-3">Submit</button>
+      </div>
+      <div class="col-md-2">
+        <button v-on:click="next" class="btn btn-primary my-3">Next</button>
+      </div>
+    </div>
     <br/><br/>
 	</div>
 
-	<div v-if="display" id="section2" class="mt-4">
+	<div v-show="display" id="section2" class="mt-4" style="display:none;">
     <h3 class="my-4">I'm Interested In Helping HCM</h3>
     <div class="form-check">
       <label class="form-check-label">
@@ -135,14 +141,38 @@
         I'd like to talk to my church about supporting HCM
       </label>
     </div>
-		<br/>
-    <button v-on:click="back" class="btn btn-primary">Back</button>
-    <button v-on:click="next" class="btn btn-primary">Next</button>
+    <div class="form-row">
+      <div class="col-md-2 my-3">
+        <button v-on:click="submit" class="btn btn-light">Submit</button>
+      </div>
+      <div class="col-md-4 my-3">
+        <button v-on:click="back" class="btn btn-primary">Back</button>
+        <button v-on:click="next" class="btn btn-primary ml-4">Next</button>
+      </div>
+    </div>
     <br/><br/>
 	</div>
 
-  <div id="section3">
-
+  <div v-show="display" id="section3" style="display:none;">
+    <div class="form-row">
+      <div class="col-md-2">
+        <label for="one_time_input">One Time Donation</label>
+        <input v-model="one_time_donation" name="one_time_donation" class="form-control" id="one_time_input" type="number">
+      </div>
+      <div class="col-md-2">
+        <label for="monthly_input">Monthly Donation</label>
+        <input v-model="monthly_donation" name="monthly_donation" class="form-control" id="monthly_input" type="number">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-md-2 my-3">
+        <button v-on:click="submit" class="btn btn-light">Submit</button>
+      </div>
+      <div class="col-md-4 my-3">
+        <button v-on:click="back" class="btn btn-primary">Back</button>
+        <button v-on:click="next" class="btn btn-primary ml-4">Next</button>
+      </div>
+    </div>
   </div>
 
   <div id="overlay" onClick="overlay_off()">
