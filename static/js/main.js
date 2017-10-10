@@ -20,6 +20,7 @@ var section1 = new Vue({
         .then(function(res){
           if (res.data.status > 1){
             self.display = false;
+						window.scroll(0,0);
             EventBus.$emit('section1-next', true);
           } else {
             overlay_on();
@@ -57,6 +58,7 @@ var section1 = new Vue({
     var self = this;
     EventBus.$on('section2-back', function(data){
       self.display = true;
+			window.scroll(0,0);
     });
   },
 })
@@ -87,6 +89,7 @@ var section2 = new Vue({
         .then(function(res){
           if (res.data.status > 2){
             self.display = false;
+						window.scroll(0,0);
             EventBus.$emit('section2-next', true);
           } else {
             overlay_on();
@@ -134,9 +137,11 @@ var section2 = new Vue({
     var self = this;
     EventBus.$on('section1-next', function(data){
       self.display = true;
+			window.scroll(0,0);
     });
     EventBus.$on('section3-back', function(data){
       self.display = true;
+			window.scroll(0,0);
     });
   },
 })
@@ -145,8 +150,19 @@ var section3 = new Vue({
   el: '#section3',
   data: {
     display: false,
-    one_time_donation: 0,
-    monthly_donation: 0,
+    one_time_donation: "",
+    monthly_donation: "",
+    renewal: false,
+    renewal_increase: "",
+  },
+  computed: {
+    total_monthly: function(){
+      var md = parseInt(this.$data.monthly_donation);
+      var ri = parseInt(this.$data.renewal_increase);
+      if (isNaN(md)) md = 0;
+      if (isNaN(ri)) ri = 0;
+      return md + ri;
+    },
   },
   methods: {
     next: function(){
@@ -160,18 +176,22 @@ var section3 = new Vue({
             overlay_on();
           }
         })
-      },
-      back: function(){
-        this.display = false;
-        EventBus.$emit('section3-back', true);
-      },
-      submit: function(){
-      },
     },
+    back: function(){
+      this.display = false;
+      EventBus.$emit('section3-back', true);
+    },
+    submit: function(){
+    },
+    increase: function(percent){
+      this.$data.renewal_increase = Math.round(this.$data.monthly_donation*(.01*percent));
+    },
+  },
   created: function(){
     var self = this;
     EventBus.$on('section2-next', function(data){
       self.display = true;
+			window.scroll(0,0);
     });
   },
 })

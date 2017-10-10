@@ -6,6 +6,10 @@
 {% raw %}
 <div class="container">
 
+  <div class="col-md-3 text-center my-3">
+    <img src="/static/img/logo.png" class="img-fluid">
+  </div>
+
 	<div v-if="display" id="section1" class="mt-4">
     <div class="form-group form-row">
       <div class="col">
@@ -45,10 +49,10 @@
     </div>
     <div class="form-row">
       <div class="col-md-2">
-        <button v-on:click="submit" class="btn btn-light my-3">Submit</button>
+        <button v-on:click="submit" class="btn btn-primary my-3">Submit</button>
       </div>
       <div class="col-md-2">
-        <button v-on:click="next" class="btn btn-primary my-3">Next</button>
+        <button v-on:click="next" class="btn btn-light my-3">Next</button>
       </div>
     </div>
     <br/><br/>
@@ -143,34 +147,54 @@
     </div>
     <div class="form-row">
       <div class="col-md-2 my-3">
-        <button v-on:click="submit" class="btn btn-light">Submit</button>
+        <button v-on:click="submit" class="btn btn-primary">Submit</button>
       </div>
       <div class="col-md-4 my-3">
-        <button v-on:click="back" class="btn btn-primary">Back</button>
-        <button v-on:click="next" class="btn btn-primary ml-4">Next</button>
+        <button v-on:click="back" class="btn btn-light">Back</button>
+        <button v-on:click="next" class="btn btn-light ml-4">Next</button>
       </div>
     </div>
     <br/><br/>
 	</div>
 
   <div v-show="display" id="section3" style="display:none;">
-    <div class="form-row">
-      <div class="col-md-2">
+    <div class="form-row my-3">
+      <div class="col-md-2 my-2">
         <label for="one_time_input">One Time Donation</label>
-        <input v-model="one_time_donation" name="one_time_donation" class="form-control" id="one_time_input" type="number">
+        <input v-model="one_time_donation" class="form-control" id="one_time_input" type="number">
       </div>
-      <div class="col-md-2">
+      <div class="col-md-2 my-2">
         <label for="monthly_input">Monthly Donation</label>
-        <input v-model="monthly_donation" name="monthly_donation" class="form-control" id="monthly_input" type="number">
+        <input v-model="monthly_donation" class="form-control" id="monthly_input" type="number">
       </div>
     </div>
+    <div class="form-check my-2">
+      <label class="form-check-label">
+        <input v-model="renewal" class="form-check-input mr-2" type="checkbox" value="">
+        Are you renewing last years commitment?
+      </label>
+    </div>
+    <div class="form-row my-3">
+      <div v-show="renewal" class="col-md-4 my-2">
+        <label for="renewal_increase_input">Would you consider increasing your donation this year?</label>
+        <input v-model="renewal_increase" class="form-control" id="renewal_increase_input" type="number">
+      </div>
+    </div>
+    <label v-show="renewal">Increase last years amount by % or enter in a new amount above</label><br/>
+    <div v-show="renewal" class="form-row text-center my-2">
+      <button v-on:click="increase(10)" type="button" class="btn btn-info ml-2">10%</button>
+      <button v-on:click="increase(20)" type="button" class="btn btn-info ml-2">20%</button>
+      <button v-on:click="increase(50)" type="button" class="btn btn-info ml-2">50%</button>
+      <button v-on:click="increase(100)" type="button" class="btn btn-info ml-2">100%</button>
+    </div>
+    <label v-show="renewal" class="my-2"><strong>New total monthly commitment: {{ total_monthly }}</strong></label>
     <div class="form-row">
       <div class="col-md-2 my-3">
-        <button v-on:click="submit" class="btn btn-light">Submit</button>
+        <button v-on:click="submit" class="btn btn-primary">Submit</button>
       </div>
       <div class="col-md-4 my-3">
-        <button v-on:click="back" class="btn btn-primary">Back</button>
-        <button v-on:click="next" class="btn btn-primary ml-4">Next</button>
+        <button v-on:click="back" class="btn btn-light">Back</button>
+        <button v-on:click="next" class="btn btn-light ml-4">Next</button>
       </div>
     </div>
   </div>

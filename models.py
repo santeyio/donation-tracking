@@ -56,10 +56,11 @@ class MonthlyDonation(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Integer, nullable=False)
+    renewal = db.Column(db.Boolean, default=False)
+    renewal_increase = db.Column(db.Integer, default=0)
 
     donor_id = db.Column(UUIDType, db.ForeignKey('donor.id'))
     donor = db.relationship("Donor", back_populates="monthly_donation")
-    renewal = db.Column(db.Boolean, default=False)
 
 class FlowFlags(db.Model):
 
