@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Controls{% endblock %}
+
+{% block body %}
+{% raw %}
+
+<div id="main" class="container">
+
+  <div class="row justify-content-center">
+    <div class="col-md-3 text-center">
+      <h3>Stage: {{ stage }}</h3>
+      <button v-on:click="change_stage(-1)" type="button" class="btn btn-dark">Back</button>
+      <button v-on:click="change_stage(1)" type="button" class="btn btn-dark">Next</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/static/js/admin.js"></script>
+
+{% endraw %}
+{% endblock %}

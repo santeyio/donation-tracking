@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Some Title{% endblock %}
+{% block title %}HCM Gala{% endblock %}
 
 {% block body %}
 {% raw %}
@@ -174,20 +174,27 @@
         Are you renewing last years commitment?
       </label>
     </div>
-    <div class="form-row my-3">
-      <div v-show="renewal" class="col-md-4 my-2">
-        <label for="renewal_increase_input">Would you consider increasing your donation this year?</label>
-        <input v-model="renewal_increase" class="form-control" id="renewal_increase_input" type="number">
+    <div v-show="renewal" class="form-check my-2">
+      <label class="form-check-label">
+        <input v-model="increase_donation" @click="test" class="form-check-input mr-2" type="checkbox" value="">
+        Would you consider increasing your donation this year?
+      </label>
+    </div>
+    <div v-show="increase_donation">
+      <div class="form-row my-3">
+        <div class="col-md-4 my-2">
+          <input v-model="renewal_increase" class="form-control" id="renewal_increase_input" type="number">
+        </div>
       </div>
+      <label>Increase last years amount by % or enter in a new amount above</label><br/>
+      <div class="form-row text-center my-2">
+        <button v-on:click="increase(10)" type="button" class="btn btn-info ml-2">10%</button>
+        <button v-on:click="increase(20)" type="button" class="btn btn-info ml-2">20%</button>
+        <button v-on:click="increase(50)" type="button" class="btn btn-info ml-2">50%</button>
+        <button v-on:click="increase(100)" type="button" class="btn btn-info ml-2">100%</button>
+      </div>
+      <label class="my-2"><strong>New total monthly commitment: {{ total_monthly }}</strong></label>
     </div>
-    <label v-show="renewal">Increase last years amount by % or enter in a new amount above</label><br/>
-    <div v-show="renewal" class="form-row text-center my-2">
-      <button v-on:click="increase(10)" type="button" class="btn btn-info ml-2">10%</button>
-      <button v-on:click="increase(20)" type="button" class="btn btn-info ml-2">20%</button>
-      <button v-on:click="increase(50)" type="button" class="btn btn-info ml-2">50%</button>
-      <button v-on:click="increase(100)" type="button" class="btn btn-info ml-2">100%</button>
-    </div>
-    <label v-show="renewal" class="my-2"><strong>New total monthly commitment: {{ total_monthly }}</strong></label>
     <div class="form-row">
       <div class="col-md-2 my-3">
         <button v-on:click="submit" class="btn btn-primary">Submit</button>
@@ -206,9 +213,11 @@
 </div>
 <script src="https://unpkg.com/vue"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/static/js/utils.js"></script>
 <script src="/static/js/main.js"></script>
 
 <script>
+
 // --------------------------------------------
 // ------ toggle for the screen overlay -------
 // --------------------------------------------

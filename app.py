@@ -18,7 +18,10 @@ def index():
     response = make_response(render_template("index.html"))
     if not user_id:
         user_id = str(uuid.uuid4())
-        new_user = Donor(id=uuid.UUID(user_id))
+        new_user = Donor(
+                id=uuid.UUID(user_id),
+                one_time_donation = OneTimeDonation(),
+                monthly_donation = MonthlyDonation())
         db.session.add(new_user)
         db.session.commit()
         response.set_cookie('user_id', user_id)
@@ -30,11 +33,35 @@ def stats():
     return render_template("stats.html")
 
 
-@app.route("/user", methods=["PUT"])
-@app.route("/user", methods=["GET"])
-def user():
-    """ Get and set donor info """
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
+
+
+@app.route("/user/<user_id>/donations", methods=["GET", "PUT"])
+def donations(user_id=None):
+    """ Attach and update donation objects to users """
     user_id = request.cookies.get('user_id')
+    if not user_id:
+        abort(400, 'user_id required')
+
+    if request.method == "PUT":
+        save_donations(user_id, request)
+        return json.dumps({'success': 'true'})
+
+    if request.method == "GET":
+        user = Donor.query.get(uuid.UUID(user_id))
+        return donations_to_json(user)
+
+
+@app.route("/donations", methods=["GET"])
+def all_donations():
+    pass
+
+
+@app.route("/user/<user_id>", methods=["GET", "PUT"])
+def user(user_id=None):
+    """ Get and set donor info """
     if not user_id:
         abort(400, 'user_id required')
 
@@ -89,10 +116,24 @@ def update_user(user_id, request):
     db.session.commit()
 
 
+def save_donations(user_id, request):
+    user = Donor.query.get(uuid.UUID(user_id))
+    jparse = request.get_json()
+
+    if jparse.get('one_time_donation'):
+        user.one_time_donation.amount = jparse.get('one_time_donation')
+    if jparse.get('monthly_donation'):
+        user.monthly_donation.amount = jparse.get('monthly_donation')
+        user.monthly_donation.renewal = jparse.get('renewal')
+        user.monthly_donation.renewal_increase = jparse.get('renewal_increase')
+
+    db.session.commit()
+
+
 def user_query_to_json(query):
     """
     turns a sqlalchemy query object into a json string
-    :param query: sqlalchemy object
+    :param query: sqlalchemy query object
     """
     user = {
         'id': str(query.id),
@@ -119,10 +160,23 @@ def user_query_to_json(query):
         'contact_me': query.contact_me,
         'tell_friends': query.tell_friends,
         'tell_church': query.tell_church,
-        'one_time_donation': query.administration,
-        'monthly_donation': query.administration,
     }
     return json.dumps(user)
+
+
+def donations_to_json(user):
+    """ 
+    turns a sqlalchemy user query object into json string 
+    :param user: sqlalchemy query object
+    """
+    donation_info = {
+        'one_time_donation': user.one_time_donation.amount,
+        'monthly_donation': user.monthly_donation.amount,
+        'renewal': user.monthly_donation.renewal,
+        'renewal_increase': user.monthly_donation.renewal_increase,
+    }
+    return json.dumps(donation_info)
+
 
 def create_db():
     """ Helper to create a local test database """

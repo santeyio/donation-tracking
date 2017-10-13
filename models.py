@@ -44,7 +44,7 @@ class OneTimeDonation(db.Model):
     __tablename__ = 'one_time_donation'
 
     id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Integer, nullable=False)
+    amount = db.Column(db.Integer, default=0)
     
     donor_id = db.Column(UUIDType, db.ForeignKey('donor.id'))
     donor = db.relationship("Donor", back_populates="one_time_donation")
@@ -55,7 +55,7 @@ class MonthlyDonation(db.Model):
     __tablename__ = 'monthly_donation'
 
     id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Integer, nullable=False)
+    amount = db.Column(db.Integer, default=0)
     renewal = db.Column(db.Boolean, default=False)
     renewal_increase = db.Column(db.Integer, default=0)
 
