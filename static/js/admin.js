@@ -1,3 +1,9 @@
+var socket = io.connect('http://localhost:5500');
+socket.on('connect', function() {
+		socket.emit('testmessage', {data: 'I\'m connected!'});
+    socket.on('t2', function(data){console.log(data)});
+});
+
 var EventBus = new Vue();
 
 var main = new Vue({

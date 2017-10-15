@@ -1,7 +1,8 @@
 import json
 import uuid
 
-from flask import Flask, render_template, request, make_response, abort
+from flask import Flask, render_template, request, make_response, abort, jsonify
+from flask_socketio import SocketIO, emit
 
 from models import db, Donor, OneTimeDonation, MonthlyDonation, FlowFlags
 
@@ -10,6 +11,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///../test.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
+socketio = SocketIO(app)
 
 
 @app.route("/")
@@ -47,16 +49,23 @@ def donations(user_id=None):
 
     if request.method == "PUT":
         save_donations(user_id, request)
-        return json.dumps({'success': 'true'})
+        return jsonify({'success': 'true'})
 
     if request.method == "GET":
         user = Donor.query.get(uuid.UUID(user_id))
-        return donations_to_json(user)
+        return jsonify(user_donations_to_dict(user))
 
 
 @app.route("/donations", methods=["GET"])
-def all_donations():
-    pass
+def all_current_donations():
+    """ grab all donations from the database and return as json"""
+    one_time_donations = OneTimeDonation.query.all()
+    od_list = donations_to_list(one_time_donations)
+
+    monthly_donations = MonthlyDonation.query.all()
+    md_list = donations_to_list(monthly_donations)
+
+    return jsonify({'one_time': od_list, 'monthly': md_list})
 
 
 @app.route("/user/<user_id>", methods=["GET", "PUT"])
@@ -67,11 +76,11 @@ def user(user_id=None):
 
     if request.method == "GET":
         user = Donor.query.get(uuid.UUID(user_id))
-        return user_query_to_json(user)
+        return jsonify(user_query_to_dict(user))
 
     if request.method == "PUT":
         update_user(user_id, request)
-        return json.dumps({'status': 'success'})
+        return jsonify({'status': 'success'})
 
 
 @app.route("/flowstatus", methods=["GET", "POST"])
@@ -87,7 +96,7 @@ def flowstatus():
             db.session.commit()
         else:
             response = {'status': status_query.flag_status}
-        return json.dumps(response)
+        return jsonify(response)
 
     if request.method == "POST":
         status = request.get_json().get('status')
@@ -98,12 +107,26 @@ def flowstatus():
         else:
             status_query.flag_status = status
         db.session.commit()
-        return json.dumps({'status': 'success'})
+        return jsonify({'status': 'success'})
+
+
+##################################
+##########  Sockets  #############
+##################################
+
+
+@socketio.on('donation')
+def emit_donation_update(donation):
+    """ emits a donation update to client display
+    :param donation: dict {
+    """
+    emit('donation', donation)
 
 
 ##################################
 ##########  Helpers ##############
 ##################################
+
 
 def update_user(user_id, request):
     user = Donor.query.get(uuid.UUID(user_id))
@@ -130,7 +153,7 @@ def save_donations(user_id, request):
     db.session.commit()
 
 
-def user_query_to_json(query):
+def user_query_to_dict(query):
     """
     turns a sqlalchemy query object into a json string
     :param query: sqlalchemy query object
@@ -161,10 +184,10 @@ def user_query_to_json(query):
         'tell_friends': query.tell_friends,
         'tell_church': query.tell_church,
     }
-    return json.dumps(user)
+    return user
 
 
-def donations_to_json(user):
+def user_donations_to_dict(user):
     """ 
     turns a sqlalchemy user query object into json string 
     :param user: sqlalchemy query object
@@ -175,7 +198,29 @@ def donations_to_json(user):
         'renewal': user.monthly_donation.renewal,
         'renewal_increase': user.monthly_donation.renewal_increase,
     }
-    return json.dumps(donation_info)
+    return donation_info
+
+
+def donations_to_list(query):
+    """
+    turns a sqlalchemy donations query into a json string
+    :param query: sqlalchemy query object to list
+    """
+    out_list = []
+
+    for donation in query:
+        _d = {}
+        for key, val in donation.__dict__.iteritems():
+            if key[0] == '_':
+                continue
+            elif key == 'donor_id':
+                _d['donor_id'] = str(val)
+                continue
+            else:
+                _d[key] = val
+        out_list.append(_d)
+
+    return out_list
 
 
 def create_db():
