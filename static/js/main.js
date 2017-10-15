@@ -191,7 +191,12 @@ var section3 = new Vue({
       var user_id = get_cookie('user_id');
       axios.put(`/user/${user_id}/donations`, this.$data)
         .then(function(res){
-
+          if (res.data.status == 'success'){
+            humane.log(
+              'Thanks! :)',
+              {addnCls: 'humane-flatty-success'}
+            )
+          }
         });
     },
     next: function(){

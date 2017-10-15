@@ -49,6 +49,7 @@ def donations(user_id=None):
 
     if request.method == "PUT":
         save_donations(user_id, request)
+        emit_donation_update(user_id, request)
         return jsonify({'success': 'true'})
 
     if request.method == "GET":
@@ -114,13 +115,24 @@ def flowstatus():
 ##########  Sockets  #############
 ##################################
 
+@socketio.on('testmessage')
+def testmessage(message):
+    print message
 
-@socketio.on('donation')
-def emit_donation_update(donation):
+def emit_donation_update(user_id, request):
     """ emits a donation update to client display
-    :param donation: dict {
+    :param user_id: user id as a string
+    :param request: flask request object
     """
-    emit('donation', donation)
+    jparse = request.get_json()
+
+    donation_update = {
+            'user_id': user_id,
+            'one_time_donation': jparse.get('one_time_donation'),
+            'monthly_donation': jparse.get('monthly_donation'),
+            'renewal': jparse.get('renewal'),
+            'renewal_increase': jparse.get('renewal_increase')}
+    socketio.emit('donation_update', donation_update)
 
 
 ##################################
@@ -206,19 +218,19 @@ def donations_to_list(query):
     turns a sqlalchemy donations query into a json string
     :param query: sqlalchemy query object to list
     """
-    out_list = []
+    out_list = {}
 
     for donation in query:
         _d = {}
         for key, val in donation.__dict__.iteritems():
-            if key[0] == '_':
+            if key[0] == '_' or key == 'donor_id':
                 continue
             elif key == 'donor_id':
                 _d['donor_id'] = str(val)
                 continue
             else:
                 _d[key] = val
-        out_list.append(_d)
+        out_list[str(donation.donor_id)] = _d
 
     return out_list
 
