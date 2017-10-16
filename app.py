@@ -14,8 +14,16 @@ db.init_app(app)
 socketio = SocketIO(app)
 
 
+##################################
+###########    Views    ##########
+##################################
+
+
 @app.route("/")
 def index():
+    """ Load the main user form template and set a user_id cookie
+    if it doesn't already exist.
+    """
     user_id = request.cookies.get('user_id')
     response = make_response(render_template("index.html"))
     if not user_id:
@@ -32,15 +40,22 @@ def index():
 
 @app.route("/stats")
 def stats():
+    """ Load the live statistics template """
     return render_template("stats.html")
 
 
 @app.route("/admin")
 def admin():
+    """ Load the admin controls template """
     return render_template("admin.html")
 
 
-@app.route("/user/<user_id>/donations", methods=["GET", "PUT"])
+##################################
+###########     API    ###########
+##################################
+
+
+@app.route("/api/v1/user/<user_id>/donations", methods=["GET", "PUT"])
 def donations(user_id=None):
     """ Attach and update donation objects to users """
     user_id = request.cookies.get('user_id')
@@ -50,14 +65,14 @@ def donations(user_id=None):
     if request.method == "PUT":
         save_donations(user_id, request)
         emit_donation_update(user_id, request)
-        return jsonify({'success': 'true'})
+        return jsonify({'status': 'success'})
 
     if request.method == "GET":
         user = Donor.query.get(uuid.UUID(user_id))
         return jsonify(user_donations_to_dict(user))
 
 
-@app.route("/donations", methods=["GET"])
+@app.route("/api/v1/donations", methods=["GET"])
 def all_current_donations():
     """ grab all donations from the database and return as json"""
     one_time_donations = OneTimeDonation.query.all()
@@ -69,7 +84,7 @@ def all_current_donations():
     return jsonify({'one_time': od_list, 'monthly': md_list})
 
 
-@app.route("/user/<user_id>", methods=["GET", "PUT"])
+@app.route("/api/v1/user/<user_id>", methods=["GET", "PUT"])
 def user(user_id=None):
     """ Get and set donor info """
     if not user_id:
@@ -84,7 +99,7 @@ def user(user_id=None):
         return jsonify({'status': 'success'})
 
 
-@app.route("/flowstatus", methods=["GET", "POST"])
+@app.route("/api/v1/flowstatus", methods=["GET", "POST"])
 def flowstatus():
     """ Get and update the status of where donors should be on the form """
 
@@ -161,6 +176,7 @@ def save_donations(user_id, request):
         user.monthly_donation.amount = jparse.get('monthly_donation')
         user.monthly_donation.renewal = jparse.get('renewal')
         user.monthly_donation.renewal_increase = jparse.get('renewal_increase')
+        user.monthly_donation.increase_donation = jparse.get('increase_donation')
 
     db.session.commit()
 
@@ -209,6 +225,7 @@ def user_donations_to_dict(user):
         'monthly_donation': user.monthly_donation.amount,
         'renewal': user.monthly_donation.renewal,
         'renewal_increase': user.monthly_donation.renewal_increase,
+        'increase_donation': user.monthly_donation.increase_donation,
     }
     return donation_info
 

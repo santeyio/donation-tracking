@@ -20,7 +20,7 @@ var section1 = new Vue({
   methods: {
     next: function(){
       var self = this;
-      axios.get('/flowstatus')
+      axios.get('/api/v1/flowstatus')
         .then(function(res){
           if (res.data.status > 1){
             self.display = false;
@@ -34,7 +34,7 @@ var section1 = new Vue({
     submit: function(){
       var self = this;
       var user_id = get_cookie('user_id');
-      axios.put(`/user/${user_id}`, self.$data)
+      axios.put(`/api/v1/user/${user_id}`, self.$data)
         .then(function(res){
           if (res.data.status == 'success'){
             humane.log(
@@ -48,7 +48,7 @@ var section1 = new Vue({
   beforeCreate: function(){
     var self = this;
     var user_id = get_cookie('user_id');
-    axios.get(`/user/${user_id}`)
+    axios.get(`/api/v1/user/${user_id}`)
       .then(function(res){
         self.$data.first_name = res.data.first_name
         self.$data.last_name = res.data.last_name
@@ -95,7 +95,7 @@ var section2 = new Vue({
   methods: {
     next: function(){
       var self = this;
-      axios.get('/flowstatus')
+      axios.get('/api/v1/flowstatus')
         .then(function(res){
           if (res.data.status > 2){
             self.display = false;
@@ -113,7 +113,7 @@ var section2 = new Vue({
     submit: function(){
       var self = this;
       var user_id = get_cookie('user_id');
-      axios.put(`/user/${user_id}`, self.$data)
+      axios.put(`/api/v1/user/${user_id}`, self.$data)
         .then(function(res){
           if (res.data.status == 'success'){
             humane.log(
@@ -127,7 +127,7 @@ var section2 = new Vue({
   beforeCreate: function(){
     var self = this;
     var user_id = get_cookie('user_id');
-    axios.get(`/user/${user_id}`)
+    axios.get(`/api/v1/user/${user_id}`)
       .then(function(res){
         self.$data.email_subscribe = res.data.email_subscribe
         self.$data.last_name = res.data.prayer_partner
@@ -185,11 +185,12 @@ var section3 = new Vue({
     test: function(){
       if (this.$data.increase_donation){
         this.$data.renewal_increase = 0;
+        this.$data.increase_donation = false;
       }
     },
     submit: function(){
       var user_id = get_cookie('user_id');
-      axios.put(`/user/${user_id}/donations`, this.$data)
+      axios.put(`/api/v1/user/${user_id}/donations`, this.$data)
         .then(function(res){
           if (res.data.status == 'success'){
             humane.log(
@@ -201,7 +202,7 @@ var section3 = new Vue({
     },
     next: function(){
       var self = this;
-      axios.get('/flowstatus')
+      axios.get('/api/v1/flowstatus')
         .then(function(res){
           if (res.data.status > 3){
             self.display = false;
@@ -222,12 +223,13 @@ var section3 = new Vue({
   beforeCreate: function(){
     var self = this;
     var user_id = get_cookie('user_id');
-    axios.get(`/user/${user_id}/donations`)
+    axios.get(`/api/v1/user/${user_id}/donations`)
       .then(function(res){
         self.$data.one_time_donation = res.data.one_time_donation;
         self.$data.monthly_donation = res.data.monthly_donation;
         self.$data.renewal = res.data.renewal;
         self.$data.renewal_increase = res.data.renewal_increase;
+        self.$data.increase_donation = res.data.increase_donation;
       });
   },
   created: function(){

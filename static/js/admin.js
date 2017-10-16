@@ -14,7 +14,7 @@ var main = new Vue({
   methods: {
     change_stage: function(change){
       self = this;
-      axios.post('/flowstatus', {status: self.$data.stage + change})
+      axios.post('/api/v1/flowstatus', {status: self.$data.stage + change})
         .then(function(res){
           self.$data.stage += change;
         });
@@ -22,7 +22,7 @@ var main = new Vue({
   },
   beforeCreate: function(){
     var self = this;
-    axios.get('/flowstatus')
+    axios.get('/api/v1/flowstatus')
       .then(function(res){
         self.$data.stage = res.data.status
       })

@@ -8,21 +8,37 @@
 <div id="stream" class="container">
 
   <div class="row">
-    <ul>
-      <li v-for="donation in latest_stream">
-        {{ donation.amount }}
-      </li>
-    </ul>
+    <div class="col-md-4">
+        <h1>total tonight: {{ total_one_time + total_new_monthly + total_renewal_increase }}</h1>
+    </div>
+    <div class="col-md-4">
+      <h1>total new year: {{ total_one_time + total_new_monthly + total_renewal_increase + year_new }}</h1>
+    </div>
+    <div class="col-md-4">
+      <h1>total total: {{ total_one_time + total_new_monthly + total_renewal_increase + year_new + year_old }}</h1>
+    </div>
   </div>
-  <div class="row">
-    <h3>total tonight: {{ total_one_time + total_new_monthly + total_renewal_increase }}</h3>
-  </div>
-  <div class="row">
-    total one time: {{ total_one_time }}
-    <br/>
-    total new monthly: {{ total_new_monthly }}
-    <br/>
-    total renewal increase: {{ total_renewal_increase }}
+  <div class="row my-5">
+    <div class="col-md-3">
+      <!--<transition-group name="fade" tag="ul">-->
+			<ul class="list-group">
+        <li v-for="donation in latest_stream" class="list-group-item list-group-item-success">
+          <em>{{ donation.title }}</em> {{ donation.amount }}
+        </li>
+			</ul>
+      <!--</transition-group>-->
+    </div>
+    <div class="col-md-4">
+        total one time: {{ total_one_time }}
+        <br/>
+        total new monthly: {{ total_new_monthly }}
+        <br/>
+        total renewal increase: {{ total_renewal_increase }}
+        <br/>
+        next 11 months of new monthly: {{ year_new }}
+        <br/>
+        renewals of old monthly: {{ year_old }}
+    </div>
   </div>
 
 </div>
