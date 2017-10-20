@@ -1,4 +1,4 @@
-var socket = io.connect(':5503/')
+var socket = io.connect('/')
 
 socket.on('donation_update', function(data){
   stream.$data.monthly_donations[data.user_id] = {
