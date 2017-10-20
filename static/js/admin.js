@@ -1,4 +1,4 @@
-var socket = io.connect(':5500/');
+var socket = io.connect(':5503/');
 socket.on('connect', function() {
 		socket.emit('testmessage', {data: 'I\'m connected!'});
     socket.on('t2', function(data){console.log(data)});
