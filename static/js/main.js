@@ -20,6 +20,7 @@ var section1 = new Vue({
   methods: {
     next: function(){
       var self = this;
+      var user_id = get_cookie('user_id');
       axios.get('/api/v1/flowstatus')
         .then(function(res){
           if (res.data.status > 1){
@@ -33,12 +34,11 @@ var section1 = new Vue({
     },
     submit: function(){
       var self = this;
-      var user_id = get_cookie('user_id');
       axios.put(`/api/v1/user/${user_id}`, self.$data)
         .then(function(res){
           if (res.data.status == 'success'){
             humane.log(
-              'Thanks! :)',
+              'Thank You!',
               {addnCls: 'humane-flatty-success'}
             )
           }

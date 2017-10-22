@@ -7,7 +7,7 @@
 <div class="container">
 
   <div class="col-md-3 text-center my-3">
-    <img src="/static/img/logo.png" class="img-fluid">
+    <img src="/static/img/logo.png" style="max-width:50%;">
   </div>
 
 	<div v-if="display" id="section1" class="mt-4">
@@ -86,12 +86,6 @@
     </div>
     <div class="form-check pl-4">
       <label class="form-check-label">
-        <input v-model="nehemiah" name="nehemiah" class="form-check-input mr-2" type="checkbox" value="">
-        Nehemiah After School (Grades 6-8)
-      </label>
-    </div>
-    <div class="form-check pl-4">
-      <label class="form-check-label">
         <input v-model="younglife" name="younglife" class="form-check-input mr-2" type="checkbox" value="">
         Younglife (Grades 9-12)
       </label>
@@ -105,13 +99,13 @@
     <div class="form-check pl-4">
       <label class="form-check-label">
         <input v-model="maintenance" name="maintenance" class="form-check-input mr-2" type="checkbox" value="">
-        Service Maintenance Projects
+        Service Projects (i.e. building repairs, painting, etc)
       </label>
     </div>
     <div class="form-check pl-4">
       <label class="form-check-label">
         <input v-model="administration" name="administration" class="form-check-input mr-2" type="checkbox" value="">
-        Administration, including mailings, etc.
+        Administration (i.e. mailings, etc)
       </label>
     </div>
     <div class="form-check pl-4">
