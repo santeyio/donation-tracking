@@ -36,6 +36,7 @@ class Donor(db.Model):
     contact_me = db.Column(db.Boolean, default=False)
     tell_friends = db.Column(db.Boolean, default=False)
     tell_church = db.Column(db.Boolean, default=False)
+    silent_auction = db.Column(db.Boolean, default=False)
     other = db.Column(db.String, default="")
 
     one_time_donation = db.relationship("OneTimeDonation", uselist=False, back_populates="donor")

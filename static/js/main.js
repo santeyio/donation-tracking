@@ -96,6 +96,7 @@ var section2 = new Vue({
     administration: false,
     event_planning: false,
     table_host: false,
+    silent_auction: false,
     contact_me: false,
     tell_friends: false,
     tell_church: false,
@@ -147,6 +148,7 @@ var section2 = new Vue({
         self.$data.administration = res.data.administration
         self.$data.event_planning = res.data.event_planning
         self.$data.table_host = res.data.table_host
+        self.$data.silent_auction = res.data.silent_auction
         self.$data.contact_me = res.data.contact_me
         self.$data.tell_friends = res.data.tell_friends
         self.$data.tell_church = res.data.tell_church
@@ -174,6 +176,7 @@ var section3 = new Vue({
   el: '#section3',
   data: {
     display: false,
+    current_status: false,
     one_time_donation: "",
     monthly_donation: "",
     renewal: false,
@@ -233,8 +236,8 @@ var section3 = new Vue({
     var user_id = get_cookie('user_id');
     axios.get(`/api/v1/user/${user_id}/donations`)
       .then(function(res){
-        self.$data.one_time_donation = res.data.one_time_donation;
-        self.$data.monthly_donation = res.data.monthly_donation;
+        self.$data.one_time_donation = res.data.one_time_donation == 0 ? "" : res.data.one_time_donation;
+        self.$data.monthly_donation = res.data.monthly_donation == 0 ? "" : res.data.monthly_donation;
         self.$data.renewal = res.data.renewal;
         self.$data.renewal_increase = res.data.renewal_increase;
         self.$data.increase_donation = res.data.increase_donation;

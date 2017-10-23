@@ -224,6 +224,7 @@ def user_query_to_dict(query):
         'contact_me': query.contact_me,
         'tell_friends': query.tell_friends,
         'tell_church': query.tell_church,
+        'silent_auction': query.silent_auction,
         'other': query.other,
     }
     return user

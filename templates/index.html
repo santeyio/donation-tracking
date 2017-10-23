@@ -127,6 +127,12 @@
         Table Host at Annual Gala
       </label>
     </div>
+    <div class="form-check pl-4">
+      <label class="form-check-label">
+        <input v-model="silent_auction" name="silent_auction" class="form-check-input mr-2" type="checkbox" value="">
+        Contact me about donating a silent auction item
+      </label>
+    </div>
     <div class="form-check">
       <label class="form-check-label">
         <input v-model="contact_me" name="contact_me" class="form-check-input mr-2" type="checkbox" value="">
@@ -162,20 +168,32 @@
 	</div>
 
   <div v-show="display" id="section3" style="display:none;">
+    <div class="form-check my-2">
+      <label class="form-check-label">
+        <input v-model="current_status" class="form-check-input mr-2" type="checkbox" value="">
+        Do you currently give to HCM monthly?
+      </label>
+    </div>
     <div class="form-row my-3">
       <div class="col-md-2 my-2">
         <label for="one_time_input">One Time Donation</label>
-        <input v-model="one_time_donation" class="form-control" id="one_time_input" type="number">
+        <div class="input-group">
+          <span class="input-group-addon">$</span>
+          <input v-model="one_time_donation" class="form-control" id="one_time_input" type="number">
+        </div>
       </div>
       <div class="col-md-2 my-2">
         <label for="monthly_input">Monthly Donation</label>
-        <input v-model="monthly_donation" class="form-control" id="monthly_input" type="number">
+        <div class="input-group">
+          <span class="input-group-addon">$</span>
+          <input v-model="monthly_donation" class="form-control" id="monthly_input" type="number">
+        </div>
       </div>
     </div>
-    <div class="form-check my-2">
+    <div v-show="current_status" class="form-check my-2">
       <label class="form-check-label">
         <input v-model="renewal" class="form-check-input mr-2" type="checkbox" value="">
-        Are you renewing last years commitment?
+        Are you renewing your commitment for another year?
       </label>
     </div>
     <div v-show="renewal" class="form-check my-2">
