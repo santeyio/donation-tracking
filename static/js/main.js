@@ -10,6 +10,7 @@ var section1 = new Vue({
     display: true,
 		first_name: "",
 		last_name: "",
+		business_name: "",
 		email: "",
 		phone: "",
 		address: "",
@@ -20,15 +21,9 @@ var section1 = new Vue({
   methods: {
     next: function(){
       var self = this;
+      var next = false;
       axios.get('/api/v1/flowstatus')
         .then(function(res){
-          if (res.data.status > 1){
-            self.display = false;
-						window.scroll(0,0);
-            EventBus.$emit('section1-next', true);
-          } else {
-            overlay_on();
-          }
         })
     },
     submit: function(){
@@ -41,6 +36,17 @@ var section1 = new Vue({
               'Thank You!',
               {addnCls: 'humane-flatty-success'}
             )
+            return axios.get('/api/v1/flowstatus');
+          }
+        })
+        .then(function(res){
+          console.log(res);
+          if (res.data.status > 1){
+            self.display = false;
+						window.scroll(0,0);
+            EventBus.$emit('section1-next', true);
+          } else {
+            overlay_on();
           }
         });
     },
@@ -52,6 +58,7 @@ var section1 = new Vue({
       .then(function(res){
         self.$data.first_name = res.data.first_name
         self.$data.last_name = res.data.last_name
+        self.$data.business_name = res.data.business_name
         self.$data.email = res.data.email
         self.$data.phone = res.data.phone
         self.$data.address = res.data.address
@@ -83,6 +90,7 @@ var section2 = new Vue({
     noah: false,
     nehemiah: false,
     younglife: false,
+    field_trips: false,
     cooking: false,
     maintenance: false,
     administration: false,
@@ -91,21 +99,9 @@ var section2 = new Vue({
     contact_me: false,
     tell_friends: false,
     tell_church: false,
+    other: "",
   },
   methods: {
-    next: function(){
-      var self = this;
-      axios.get('/api/v1/flowstatus')
-        .then(function(res){
-          if (res.data.status > 2){
-            self.display = false;
-						window.scroll(0,0);
-            EventBus.$emit('section2-next', true);
-          } else {
-            overlay_on();
-          }
-        })
-    },
     back: function(){
       this.display = false;
       EventBus.$emit('section2-back', true);
@@ -120,6 +116,16 @@ var section2 = new Vue({
               'Thanks! :)',
               {addnCls: 'humane-flatty-success'}
             )
+            return axios.get('/api/v1/flowstatus');
+          }
+        })
+        .then(function(res){
+          if (res.data.status > 2){
+            self.display = false;
+						window.scroll(0,0);
+            EventBus.$emit('section2-next', true);
+          } else {
+            overlay_on();
           }
         });
     },
@@ -130,11 +136,12 @@ var section2 = new Vue({
     axios.get(`/api/v1/user/${user_id}`)
       .then(function(res){
         self.$data.email_subscribe = res.data.email_subscribe
-        self.$data.last_name = res.data.prayer_partner
+        self.$data.prayer_partner = res.data.prayer_partner
         self.$data.volunteer = res.data.volunteer
         self.$data.noah = res.data.noah
         self.$data.nehemiah = res.data.nehemiah
         self.$data.younglife = res.data.younglife
+        self.$data.field_trips = res.data.field_trips
         self.$data.cooking = res.data.cooking
         self.$data.maintenance = res.data.maintenance
         self.$data.administration = res.data.administration
@@ -143,6 +150,7 @@ var section2 = new Vue({
         self.$data.contact_me = res.data.contact_me
         self.$data.tell_friends = res.data.tell_friends
         self.$data.tell_church = res.data.tell_church
+        self.$data.other = res.data.other
       })
   },
   created: function(){

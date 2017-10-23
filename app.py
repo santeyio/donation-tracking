@@ -26,14 +26,18 @@ def index():
     """
     user_id = request.cookies.get('user_id')
     response = make_response(render_template("index.html"))
+    if user_id:
+        # just checking to see if user exists -- this is mostly for
+        # testing when you empty the db. When you clear the db your
+        # device still has the user cookie set so we can't expect 
+        # the user to exist in the DB necessarily. Create it if it
+        # with the given id if it doesn't already exist. 
+        user = Donor.query.get(uuid.UUID(user_id))
+        if not user:
+            create_user_by_id_str(user_id)
     if not user_id:
         user_id = str(uuid.uuid4())
-        new_user = Donor(
-                id=uuid.UUID(user_id),
-                one_time_donation = OneTimeDonation(),
-                monthly_donation = MonthlyDonation())
-        db.session.add(new_user)
-        db.session.commit()
+        create_user_by_id_str(user_id)
         response.set_cookie('user_id', user_id)
     return response
 
@@ -154,6 +158,13 @@ def emit_donation_update(user_id, request):
 ##########  Helpers ##############
 ##################################
 
+def create_user_by_id_str(user_id):
+    new_user = Donor(
+            id=uuid.UUID(user_id),
+            one_time_donation = OneTimeDonation(),
+            monthly_donation = MonthlyDonation())
+    db.session.add(new_user)
+    db.session.commit()
 
 def update_user(user_id, request):
     user = Donor.query.get(uuid.UUID(user_id))
@@ -190,6 +201,7 @@ def user_query_to_dict(query):
         'id': str(query.id),
         'first_name': query.first_name,
         'last_name': query.last_name,
+        'business_name': query.business_name,
         'email': query.email,
         'address': query.address,
         'city': query.city,
@@ -203,6 +215,7 @@ def user_query_to_dict(query):
         'noah': query.noah,
         'nehemiah': query.nehemiah,
         'younglife': query.younglife,
+        'field_trips': query.field_trips,
         'cooking': query.cooking,
         'maintenance': query.maintenance,
         'administration': query.administration,
@@ -211,6 +224,7 @@ def user_query_to_dict(query):
         'contact_me': query.contact_me,
         'tell_friends': query.tell_friends,
         'tell_church': query.tell_church,
+        'other': query.other,
     }
     return user
 

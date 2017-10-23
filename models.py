@@ -13,6 +13,7 @@ class Donor(db.Model):
     id = db.Column(UUIDType, primary_key=True)
     first_name = db.Column(db.String, default="")
     last_name = db.Column(db.String, default="")
+    business_name = db.Column(db.String, default="")
     email = db.Column(db.String, default="")
     address = db.Column(db.String, default="")
     city = db.Column(db.String, default="")
@@ -26,6 +27,7 @@ class Donor(db.Model):
     noah = db.Column(db.Boolean, default=False)
     nehemiah = db.Column(db.Boolean, default=False)
     younglife = db.Column(db.Boolean, default=False)
+    field_trips = db.Column(db.Boolean, default=False)
     cooking = db.Column(db.Boolean, default=False)
     maintenance = db.Column(db.Boolean, default=False)
     administration = db.Column(db.Boolean, default=False)
@@ -34,6 +36,7 @@ class Donor(db.Model):
     contact_me = db.Column(db.Boolean, default=False)
     tell_friends = db.Column(db.Boolean, default=False)
     tell_church = db.Column(db.Boolean, default=False)
+    other = db.Column(db.String, default="")
 
     one_time_donation = db.relationship("OneTimeDonation", uselist=False, back_populates="donor")
     monthly_donation = db.relationship("MonthlyDonation", uselist=False, back_populates="donor")
