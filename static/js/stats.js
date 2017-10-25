@@ -72,7 +72,7 @@ var stream = new Vue({
       
       var percent = ((total/7000)*100);
       this.$data.percent = percent;
-      if (percent>100){
+      if (percent>=100){
         firework_show();
       };
       return total;
