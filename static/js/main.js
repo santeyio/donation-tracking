@@ -176,7 +176,7 @@ var section3 = new Vue({
   el: '#section3',
   data: {
     display: false,
-    current_status: false,
+    //current_status: false,
     one_time_donation: "",
     monthly_donation: "",
     renewal: false,

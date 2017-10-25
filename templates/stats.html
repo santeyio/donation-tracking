@@ -7,45 +7,30 @@
 
 <div id="stream" class="container">
 
-  <div class="row my-5">
-    <div class="col-md-4">
-        <h1>total tonight: {{ total_one_time + total_new_monthly + total_renewal_increase }}</h1>
-    </div>
-    <div class="col-md-4">
-      <h1>total new year: {{ total_one_time + total_new_monthly + total_renewal_increase + year_new }}</h1>
-    </div>
-    <div class="col-md-4">
-      <h1>total total: {{ total_one_time + total_new_monthly + total_renewal_increase + year_new + year_old }}</h1>
+  <div class="row my-5" id="progress-bar">
+    <div v-bind:style="{width: percent+'%'}" class="align-middle" id="bar-filler">
+      <h1 class="main-tracker my-5">${{ total }}</h1>
     </div>
   </div>
-  <div class="row my-5">
-    <div class="col-md-3">
-      <!--<transition-group name="fade" tag="ul">-->
-			<ul class="list-group">
-        <li v-for="donation in latest_stream" class="list-group-item list-group-item-success">
-          <em>{{ donation.title }}</em> {{ donation.amount }}
-        </li>
-			</ul>
-      <!--</transition-group>-->
-    </div>
-    <div class="col-md-4">
-        total one time: {{ total_one_time }}
-        <br/>
-        total new monthly: {{ total_new_monthly }}
-        <br/>
-        total renewal increase: {{ total_renewal_increase }}
-        <br/>
-        next 11 months of new monthly: {{ year_new }}
-        <br/>
-        renewals of old monthly: {{ year_old }}
-    </div>
-  </div>
+
+	<div id="fireworks-template">
+	  <div id="fw" class="firework"></div>
+	  <div id="fp" class="fireworkParticle"><img src="/static/img/particles.gif" alt="" /></div>
+	</div>
+	<div id="fireContainer"></div>
 
 </div>
 
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
 <script src="https://unpkg.com/vue"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script src="/static/js/soundmanager2-nodebug-jsmin.js"></script>
+<script src="/static/js/fireworks.js"></script>
+<script src="/static/js/pnotify.custom.min.js"></script>
 <script src="/static/js/stats.js"></script>
 
 {% endraw %}

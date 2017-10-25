@@ -20,10 +20,10 @@
         <label for="lname_input">Last Name</label>
         <input v-model="last_name" name="last_name" class="form-control" id="lname_input" type="text" placeholder="Last Name">
       </div>
-      <div class="col">
-        <label for="lname_input">Business / Org Name</label>
-        <input v-model="business_name" name="business_name" class="form-control" id="lname_input" type="text" placeholder="Travelers">
-      </div>
+    </div>
+    <div class="form-group">
+      <label for="lname_input">Business / Org Name</label>
+      <input v-model="business_name" name="business_name" class="form-control" id="lname_input" type="text" placeholder="Travelers">
     </div>
     <div class="form-group">
       <label for="email_input">Email</label>
@@ -168,12 +168,12 @@
 	</div>
 
   <div v-show="display" id="section3" style="display:none;">
-    <div class="form-check my-2">
-      <label class="form-check-label">
-        <input v-model="current_status" class="form-check-input mr-2" type="checkbox" value="">
-        Do you currently give to HCM monthly?
-      </label>
-    </div>
+    <!--<div class="form-check my-2">-->
+      <!--<label class="form-check-label">-->
+        <!--<input v-model="current_status" class="form-check-input mr-2" type="checkbox" value="">-->
+        <!--Do you currently give to HCM monthly?-->
+      <!--</label>-->
+    <!--</div>-->
     <div class="form-row my-3">
       <div class="col-md-2 my-2">
         <label for="one_time_input">One Time Donation</label>
@@ -190,7 +190,7 @@
         </div>
       </div>
     </div>
-    <div v-show="current_status" class="form-check my-2">
+    <div class="form-check my-2">
       <label class="form-check-label">
         <input v-model="renewal" class="form-check-input mr-2" type="checkbox" value="">
         Are you renewing your commitment for another year?
