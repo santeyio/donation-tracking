@@ -9,7 +9,7 @@ function firework_show(){
 
 //window.onload = firework_show();
 
-var socket = io.connect(':5500/')
+var socket = io.connect('/')
 var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
 
 socket.on('donation_update', function(data){
