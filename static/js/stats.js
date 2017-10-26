@@ -69,7 +69,7 @@ var stream = new Vue({
   },
 })
 
-var socket = io.connect(':5500/')
+var socket = io.connect('/')
 var stack_bottomleft = {"dir1": "right", "dir2": "up", "push": "top"};
 
 socket.on('donation_update', function(data){
