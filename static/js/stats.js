@@ -93,7 +93,7 @@ socket.on('donation_update', function(data){
   if (Number(data.monthly_donation) > 0){
     var type = 'success';
     var title = 'New Monthly!';
-    if (data.renewal == true){
+    if (Boolean(data.renewal) == true){
       type = 'notice';
       title = 'Monthly Renewal!';
     }
@@ -101,17 +101,21 @@ socket.on('donation_update', function(data){
       title: title,
       text: `<h1>\$${Number(data.monthly_donation)}</h1>`,
       type: type,
+      delay: 15000,
       addclass: 'stack-bottomleft',
       stack: stack_bottomleft,
     });
     if (Number(data.renewal_increase > 0)){
-      new PNotify({
-        title: "Monthly Increase!",
-        text: `<h1>\$${Number(data.renewal_increase)}</h1>`,
-        type: 'success',
-        addclass: 'stack-bottomleft',
-        stack: stack_bottomleft,
-      });
+      setTimeout(function(){
+        new PNotify({
+          title: "Monthly Increase!",
+          text: `<h1>\$${Number(data.renewal_increase)}</h1>`,
+          type: 'success',
+          delay: 15000,
+          addclass: 'stack-bottomleft',
+          stack: stack_bottomleft,
+        });
+      }, 4000);
     }
   };
 
@@ -122,10 +126,11 @@ socket.on('donation_update', function(data){
         title: 'New One Time!',
         text: `<h1>\$${data.one_time_donation}</h1>`,
         type: 'success',
+        delay: 15000,
         addclass: 'stack-bottomleft',
         stack: stack_bottomleft,
       });
-    }, 500);
+    }, 2000);
   };
 });
 

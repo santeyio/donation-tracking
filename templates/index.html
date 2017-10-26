@@ -200,7 +200,7 @@
     </div>
 
     <div v-if="currently_give === 'true'">
-      Are you renewing your commitment for another year?
+      Are you renewing your commitment (in full or in part) for another year?
       <div class="form-group">
         <div class="form-check form-check-inline">
           <div class="form-check-label">
@@ -215,7 +215,14 @@
       </div>
 
       <div v-if="renewal === ''">
-        We're so sorry to lose you as a donor. May we contact you to discuss your decision?
+        <div class="col-md-3 my-2">
+          <label for="one_time_input">One Time Donation</label>
+          <div class="input-group">
+            <span class="input-group-addon">$</span>
+            <input v-model="one_time_donation" class="form-control" id="one_time_input" type="number">
+          </div>
+        </div>
+        <p>We're so sorry to lose you as a donor. May we contact you to discuss your decision?</p>
         <div class="form-group">
           <div class="form-check form-check-inline">
             <div class="form-check-label">
@@ -257,7 +264,10 @@
         <div v-show="increase_donation">
           <div class="form-row my-3">
             <div class="col-md-4 my-2">
-              <input v-model="renewal_increase" class="form-control" id="renewal_increase_input" type="number">
+              <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input v-model="renewal_increase" class="form-control" id="renewal_increase_input" type="number">
+              </div>
             </div>
           </div>
           <label>Increase last years amount by % or enter in a new amount above</label><br/>
@@ -267,7 +277,7 @@
             <button v-on:click="increase(50)" type="button" class="btn btn-info ml-2">50%</button>
             <button v-on:click="increase(100)" type="button" class="btn btn-info ml-2">100%</button>
           </div>
-          <label class="my-2"><strong>New total monthly commitment: {{ total_monthly }}</strong></label>
+          <label class="my-2"><strong>New total monthly commitment: ${{ total_monthly }}</strong></label>
         </div>
       </div>
 
@@ -277,6 +287,9 @@
         <button v-on:click="back" class="btn btn-light">Back</button>
         <button v-on:click="submit" class="btn btn-primary">Submit</button>
       </div>
+    </div>
+    <div class="form-row">
+      <p class="muted">NOTE: If you resubmit you will <b>not</b> create a new submission. It will update the info from your previous submission</p>
     </div>
 
   </div>

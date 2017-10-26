@@ -33,7 +33,7 @@ var section1 = new Vue({
         .then(function(res){
           if (res.data.status == 'success'){
             humane.log(
-              'Thank You!',
+              'Thanks! Successfully Submitted.',
               {addnCls: 'humane-flatty-success'}
             )
             return axios.get('/api/v1/flowstatus');
@@ -114,7 +114,7 @@ var section2 = new Vue({
         .then(function(res){
           if (res.data.status == 'success'){
             humane.log(
-              'Thanks! :)',
+              'Thanks! Successfully Submitted.',
               {addnCls: 'humane-flatty-success'}
             )
             return axios.get('/api/v1/flowstatus');
@@ -206,7 +206,7 @@ var section3 = new Vue({
         .then(function(res){
           if (res.data.status == 'success'){
             humane.log(
-              'Thanks! :)',
+              'Thanks! Successfully Submitted.',
               {addnCls: 'humane-flatty-success'}
             )
           }
