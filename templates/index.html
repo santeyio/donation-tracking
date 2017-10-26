@@ -168,13 +168,21 @@
 	</div>
 
   <div v-show="display" id="section3" style="display:none;">
-    <!--<div class="form-check my-2">-->
-      <!--<label class="form-check-label">-->
-        <!--<input v-model="current_status" class="form-check-input mr-2" type="checkbox" value="">-->
-        <!--Do you currently give to HCM monthly?-->
-      <!--</label>-->
-    <!--</div>-->
-    <div class="form-row my-3">
+    <p>Do you currently give to HCM monthly?</p>
+    <div class="form-group">
+      <div class="form-check form-check-inline">
+        <div class="form-check-label">
+          <input v-model="currently_give" value="true" class="form-check-input" type="radio"> Yes
+        </div>
+      </div>
+      <div class="form-check form-check-inline">
+        <div class="form-check-label">
+          <input v-model="currently_give" value="" class="form-check-input" type="radio"> No
+        </div>
+      </div>
+    </div>
+
+    <div v-if="currently_give === ''" class="form-row my-3">
       <div class="col-md-2 my-2">
         <label for="one_time_input">One Time Donation</label>
         <div class="input-group">
@@ -190,32 +198,79 @@
         </div>
       </div>
     </div>
-    <div class="form-check my-2">
-      <label class="form-check-label">
-        <input v-model="renewal" class="form-check-input mr-2" type="checkbox" value="">
-        Are you renewing your commitment for another year?
-      </label>
-    </div>
-    <div v-show="renewal" class="form-check my-2">
-      <label class="form-check-label">
-        <input v-model="increase_donation" class="form-check-input mr-2" type="checkbox" value="">
-        Would you consider increasing your donation this year?
-      </label>
-    </div>
-    <div v-show="increase_donation">
-      <div class="form-row my-3">
-        <div class="col-md-4 my-2">
-          <input v-model="renewal_increase" class="form-control" id="renewal_increase_input" type="number">
+
+    <div v-if="currently_give === 'true'">
+      Are you renewing your commitment for another year?
+      <div class="form-group">
+        <div class="form-check form-check-inline">
+          <div class="form-check-label">
+            <input v-model="renewal" value="true" class="form-check-input" type="radio"> Yes
+          </div>
+        </div>
+        <div class="form-check form-check-inline">
+          <div class="form-check-label">
+            <input v-model="renewal" value="" class="form-check-input" type="radio"> No
+          </div>
         </div>
       </div>
-      <label>Increase last years amount by % or enter in a new amount above</label><br/>
-      <div class="form-row text-center my-2">
-        <button v-on:click="increase(10)" type="button" class="btn btn-info ml-2">10%</button>
-        <button v-on:click="increase(20)" type="button" class="btn btn-info ml-2">20%</button>
-        <button v-on:click="increase(50)" type="button" class="btn btn-info ml-2">50%</button>
-        <button v-on:click="increase(100)" type="button" class="btn btn-info ml-2">100%</button>
+
+      <div v-if="renewal === ''">
+        We're so sorry to lose you as a donor. May we contact you to discuss your decision?
+        <div class="form-group">
+          <div class="form-check form-check-inline">
+            <div class="form-check-label">
+              <input v-model="discuss_decision" value="true" class="form-check-input" type="radio"> Yes
+            </div>
+          </div>
+          <div class="form-check form-check-inline">
+            <div class="form-check-label">
+              <input v-model="discuss_decision" value="" class="form-check-input" type="radio"> No
+            </div>
+          </div>
+        </div>
       </div>
-      <label class="my-2"><strong>New total monthly commitment: {{ total_monthly }}</strong></label>
+
+      <div v-if="renewal === 'true'">
+        <div class="form-row my-3">
+          <div class="col-md-3 my-2">
+            <label for="one_time_input">One Time Donation</label>
+            <div class="input-group">
+              <span class="input-group-addon">$</span>
+              <input v-model="one_time_donation" class="form-control" id="one_time_input" type="number">
+            </div>
+          </div>
+          <div class="col-md-3 my-2">
+            <label for="monthly_input">Current Monthly Donation</label>
+            <div class="input-group">
+              <span class="input-group-addon">$</span>
+              <input v-model="monthly_donation" class="form-control" id="monthly_input" type="number">
+            </div>
+          </div>
+        </div>
+
+        <div v-show="renewal" class="form-check my-2">
+          <label class="form-check-label">
+            <input v-model="increase_donation" class="form-check-input mr-2" type="checkbox" value="">
+            Would you consider increasing your donation this year?
+          </label>
+        </div>
+        <div v-show="increase_donation">
+          <div class="form-row my-3">
+            <div class="col-md-4 my-2">
+              <input v-model="renewal_increase" class="form-control" id="renewal_increase_input" type="number">
+            </div>
+          </div>
+          <label>Increase last years amount by % or enter in a new amount above</label><br/>
+          <div class="form-row text-center my-2">
+            <button v-on:click="increase(10)" type="button" class="btn btn-info ml-2">10%</button>
+            <button v-on:click="increase(20)" type="button" class="btn btn-info ml-2">20%</button>
+            <button v-on:click="increase(50)" type="button" class="btn btn-info ml-2">50%</button>
+            <button v-on:click="increase(100)" type="button" class="btn btn-info ml-2">100%</button>
+          </div>
+          <label class="my-2"><strong>New total monthly commitment: {{ total_monthly }}</strong></label>
+        </div>
+      </div>
+
     </div>
     <div class="form-row">
       <div class="col-md-4 my-3">
@@ -223,10 +278,11 @@
         <button v-on:click="submit" class="btn btn-primary">Submit</button>
       </div>
     </div>
+
   </div>
 
   <div id="overlay" onClick="overlay_off()">
-    <h4 id="overlay_text">Whoa there cowboy, wait 'till Dave says it's time for the next page ;)</h4>
+    <h4 id="overlay_text">Hold on there, wait until Dave says it's time for the next page!</h4>
   </div>
 
 </div>

@@ -176,12 +176,13 @@ var section3 = new Vue({
   el: '#section3',
   data: {
     display: false,
-    //current_status: false,
+    currently_give: false,
     one_time_donation: "",
     monthly_donation: "",
     renewal: false,
     renewal_increase: "",
     increase_donation: false,
+    discuss_decision: false,
   },
   computed: {
     total_monthly: function(){
