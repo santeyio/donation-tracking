@@ -63,6 +63,8 @@ class MonthlyDonation(db.Model):
     renewal = db.Column(db.Boolean, default=False)
     renewal_increase = db.Column(db.Integer, default=0)
     increase_donation = db.Column(db.Boolean, default=False)
+    currently_give = db.Column(db.Boolean, default=False)
+    discuss_decision = db.Column(db.Boolean, default=False)
 
     donor_id = db.Column(UUIDType, db.ForeignKey('donor.id'))
     donor = db.relationship("Donor", back_populates="monthly_donation")

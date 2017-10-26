@@ -188,6 +188,8 @@ def save_donations(user_id, request):
         user.monthly_donation.renewal = jparse.get('renewal')
         user.monthly_donation.renewal_increase = jparse.get('renewal_increase')
         user.monthly_donation.increase_donation = jparse.get('increase_donation')
+        user.monthly_donation.currently_give = jparse.get('currently_give')
+        user.monthly_donation.discuss_decision = jparse.get('discuss_decision')
 
     db.session.commit()
 
